@@ -1,0 +1,218 @@
+### CONFIGURACIÓN DE VARIABLES
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc0MjY2Njg0OSwiZXhwIjoxNzQyNzUzMjQ5fQ.ld1R1-MbomGiFEGXEmOPVKTjN1MfCVoQVSLAwO2t5XQ
+
+### ==========================================
+### 🏠 RUTAS GENERALES
+### ==========================================
+
+### Página principal
+GET http://localhost:3000
+
+### Documentación de la API
+GET http://localhost:3000/api/docs
+
+### ==========================================
+### 🔐 AUTENTICACIÓN
+### ==========================================
+
+### Ver endpoints de autenticación disponibles
+GET http://localhost:3000/api/auth
+
+### Iniciar sesión como admin
+# Credenciales por defecto - Usuario: admin, Contraseña: admin123
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### Renovar token JWT
+POST http://localhost:3000/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzQyNjY2MjU0LCJleHAiOjE3NDMyNzEwNTR9.iNqaQ_vwiluu4Z4GCrc6cwIfV87Pw5LLGInIRIm1EFo" 
+}
+
+### ==========================================
+### 👤 USUARIOS
+### ==========================================
+
+### Ver endpoints de usuarios disponibles
+GET http://localhost:3000/api/users
+
+### Registrar nuevo usuario (Shopper)
+POST http://localhost:3000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "cliente3",
+  "password": "password123",
+  "name": "Cliente 3 ",
+  "email": "client3@example.com"
+}
+
+### Obtener todos los usuarios (requiere admin)
+GET http://localhost:3000/api/users
+Authorization: Bearer {{authToken}}
+
+### Obtener usuario por ID
+GET http://localhost:3000/api/users/2
+Authorization: Bearer {{authToken}}
+
+### Actualizar usuario
+PUT http://localhost:3000/api/users/18
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Shopper",
+  "email": "shopper@example.com"
+}
+
+### Eliminar usuario (requiere admin)
+DELETE http://localhost:3000/api/users/11
+Authorization: Bearer {{authToken}}
+
+### ==========================================
+### 🏪 TIENDAS
+### ==========================================
+
+### Ver endpoints de tiendas disponibles
+GET http://localhost:3000/api/shops
+
+### Crear tienda (requiere admin)
+POST http://localhost:3000/api/shops
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Tienda de Moda",
+  "description": "Tienda especializada en moda sostenible",
+  "owner_id": 2,
+  "categories": [1, 2]
+}
+
+### Obtener todas las tiendas
+GET http://localhost:3000/api/shops
+
+### Obtener tienda por ID
+GET http://localhost:3000/api/shops/1
+
+### Obtener tiendas por propietario
+GET http://localhost:3000/api/shops/owner/2
+Authorization: Bearer {{authToken}}
+
+### Actualizar tienda
+PUT http://localhost:3000/api/shops/1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Tienda de Moda Actualizada",
+  "description": "Descripción actualizada",
+  "categories": [1, 3]
+}
+
+### Eliminar tienda (requiere admin)
+DELETE http://localhost:3000/api/shops/1
+Authorization: Bearer {{authToken}}
+
+### ==========================================
+### 📦 PRODUCTOS
+### ==========================================
+
+### Ver endpoints de productos disponibles
+GET http://localhost:3000/api/products
+
+### Crear producto
+POST http://localhost:3000/api/products
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Camiseta Sostenible",
+  "description": "Camiseta hecha de algodón orgánico",
+  "price": 29.99,
+  "size": "M",
+  "stock": 100,
+  "shop_id": 1
+}
+
+### Obtener todos los productos
+GET http://localhost:3000/api/products
+
+### Obtener producto por ID
+GET http://localhost:3000/api/products/1
+
+### Obtener productos por tienda
+GET http://localhost:3000/api/products/shop/1
+
+### Actualizar producto
+PUT http://localhost:3000/api/products/1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Camiseta Sostenible Premium",
+  "description": "Versión premium de nuestra camiseta sostenible",
+  "price": 39.99,
+  "stock": 50
+}
+
+### Eliminar producto
+DELETE http://localhost:3000/api/products/1
+Authorization: Bearer {{authToken}}
+
+### ==========================================
+### 🛒 PEDIDOS
+### ==========================================
+
+### Ver endpoints de pedidos disponibles
+GET http://localhost:3000/api/orders
+
+### Crear pedido
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "shop_id": 1,
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    },
+    {
+      "product_id": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+### Obtener todos los pedidos (requiere admin)
+GET http://localhost:3000/api/orders
+Authorization: Bearer {{authToken}}
+
+### Obtener pedido por ID
+GET http://localhost:3000/api/orders/1
+Authorization: Bearer {{authToken}}
+
+### Obtener pedidos por comprador
+GET http://localhost:3000/api/orders/shopper/2
+Authorization: Bearer {{authToken}}
+
+### Obtener pedidos por tienda
+GET http://localhost:3000/api/orders/shop/1
+Authorization: Bearer {{authToken}}
+
+### Actualizar estado del pedido
+PUT http://localhost:3000/api/orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "status": "PROCESSING"
+} 
