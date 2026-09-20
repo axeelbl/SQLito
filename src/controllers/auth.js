@@ -35,6 +35,9 @@ router.get('/', (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body
+        if (typeof username !== 'string' || typeof password !== 'string' || !username.trim() || !password) {
+            return res.status(400).json({ error: 'Usuario y contraseña son obligatorios' })
+        }
 
         // Buscar usuario por username
         const user = await usersModel.getUserByUsername(username)
@@ -52,13 +55,13 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role },
             config.JWT_SECRET,
-            { expiresIn: '24h' }
+            { algorithm: 'HS256', expiresIn: '24h' }
         )
 
         const refreshToken = jwt.sign(
             { id: user.id },
             config.JWT_REFRESH_SECRET,
-            { expiresIn: '7d' }
+            { algorithm: 'HS256', expiresIn: '7d' }
         )
 
         res.json({
@@ -82,12 +85,12 @@ router.post('/login', async (req, res) => {
 router.post('/refresh', async (req, res) => {
     try {
         const { refreshToken } = req.body
-        if (!refreshToken) {
+        if (typeof refreshToken !== 'string' || !refreshToken) {
             return res.status(401).json({ error: 'Refresh token no proporcionado' })
         }
 
         // Verificar refresh token
-        const decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET)
+        const decoded = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET, { algorithms: ['HS256'] })
         const user = await usersModel.getUserById(decoded.id)
 
         if (!user) {
@@ -98,13 +101,13 @@ router.post('/refresh', async (req, res) => {
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role },
             config.JWT_SECRET,
-            { expiresIn: '24h' }
+            { algorithm: 'HS256', expiresIn: '24h' }
         )
 
         const newRefreshToken = jwt.sign(
             { id: user.id },
             config.JWT_REFRESH_SECRET,
-            { expiresIn: '7d' }
+            { algorithm: 'HS256', expiresIn: '7d' }
         )
 
         res.json({

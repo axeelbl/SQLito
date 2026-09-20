@@ -1,5 +1,5 @@
 ### CONFIGURACIÓN DE VARIABLES
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc0MjY2Njg0OSwiZXhwIjoxNzQyNzUzMjQ5fQ.ld1R1-MbomGiFEGXEmOPVKTjN1MfCVoQVSLAwO2t5XQ
+@authToken = paste-a-local-token-here
 
 ### ==========================================
 ### 🏠 RUTAS GENERALES
@@ -18,14 +18,13 @@ GET http://localhost:3000/api/docs
 ### Ver endpoints de autenticación disponibles
 GET http://localhost:3000/api/auth
 
-### Iniciar sesión como admin
-# Credenciales por defecto - Usuario: admin, Contraseña: admin123
+### Iniciar sesión como admin creado mediante BOOTSTRAP_ADMIN_*
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
   "username": "admin",
-  "password": "admin123"
+  "password": "replace-with-your-local-password"
 }
 
 ### Renovar token JWT
@@ -33,7 +32,7 @@ POST http://localhost:3000/api/auth/refresh
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzQyNjY2MjU0LCJleHAiOjE3NDMyNzEwNTR9.iNqaQ_vwiluu4Z4GCrc6cwIfV87Pw5LLGInIRIm1EFo" 
+  "refreshToken": "paste-a-local-refresh-token-here"
 }
 
 ### ==========================================
@@ -189,7 +188,8 @@ Authorization: Bearer {{authToken}}
       "product_id": 2,
       "quantity": 1
     }
-  ]
+  ],
+  "address": "Calle de ejemplo 1"
 }
 
 ### Obtener todos los pedidos (requiere admin)
@@ -214,5 +214,5 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "status": "PROCESSING"
-} 
+  "status_id": 2
+}

@@ -1,10 +1,9 @@
+require('express-async-errors')
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 require('dotenv').config()
-
-// Cargar la base de datos
-const db = require('./utils/db')
+const config = require('./utils/config')
 
 const authRouter = require('./controllers/auth')
 const usersRouter = require('./controllers/users')
@@ -15,8 +14,11 @@ const ordersRouter = require('./controllers/orders')
 const app = express()
 
 // Middleware
-app.use(cors())
-app.use(express.json())
+app.disable('x-powered-by')
+app.use(cors({
+    origin: config.CORS_ORIGINS.length > 0 ? config.CORS_ORIGINS : false
+}))
+app.use(express.json({ limit: '100kb' }))
 app.use(morgan('dev'))
 
 // Ruta raíz
@@ -25,6 +27,10 @@ app.get('/', (req, res) => {
         message: 'Bienvenido a la API de Virtual REC',
         version: '1.0.0'
     })
+})
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' })
 })
 
 // Ruta de documentación
@@ -83,6 +89,9 @@ app.use('/api/orders', ordersRouter)
 // Manejador de errores
 app.use((err, req, res, next) => {
     console.error(err.stack)
+    if (err instanceof SyntaxError && err.status === 400) {
+        return res.status(400).json({ error: 'JSON inválido' })
+    }
     res.status(500).json({ error: 'Algo salió mal!' })
 })
 

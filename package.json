@@ -1,26 +1,38 @@
 {
   "name": "virtual-rec-backend",
   "version": "1.0.0",
-  "description": "Backend para la aplicación Virtual REC",
+  "description": "API REST de Virtual REC con Express y SQLite",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest"
+    "check": "node scripts/check-syntax.js",
+    "test": "jest --runInBand"
   },
-  "author": "Your names here",
+  "author": "axeelbl",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.7.0",
-    "nodemon": "^3.0.3"
+    "jest": "^30.5.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.1",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
-    "sqlite3": "^5.1.7"
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "sqlite3": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "sqlite3@6.0.1": true,
+    "@parcel/watcher@2.6.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
